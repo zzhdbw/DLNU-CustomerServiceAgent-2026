@@ -205,3 +205,13 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+
+**/processed/*
+**/processed_zip/*
+**/data/raw/*
+
+!**/.gitkeep
+!/01_DocumentParse/data/raw/NIPS-2017-attention-is-all-you-need-Paper.pdf
+
+**/.DS_Store
