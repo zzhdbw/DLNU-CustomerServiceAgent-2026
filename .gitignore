@@ -210,6 +210,8 @@ __marimo__/
 **/processed/*
 **/processed_zip/*
 **/data/raw/*
+**/models/*
+!**/models/download.sh
 
 !**/.gitkeep
 !/01_DocumentParse/data/raw/NIPS-2017-attention-is-all-you-need-Paper.pdf
