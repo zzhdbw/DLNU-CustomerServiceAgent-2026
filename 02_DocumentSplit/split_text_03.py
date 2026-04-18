@@ -3,8 +3,8 @@ import os
 import spacy
 
 
-DATA_PATH = os.path.join(os.path.dirname(__file__), "data", "aatten_is_all_you_need.md")
-CHUNK_SIZE = 500
+DATA_PATH = os.path.join(os.path.dirname(__file__), "data", "atten_is_all_you_need.md")
+CHUNK_SIZE = 512
 
 
 def read_file(file_path):
