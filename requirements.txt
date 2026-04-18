@@ -4,3 +4,8 @@ spacy
 sentence-transformers
 pandas
 jieba
+pymilvus[milvus-lite]
+openai
+requests
+tqdm
+gradio

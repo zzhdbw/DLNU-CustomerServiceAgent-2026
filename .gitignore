@@ -217,3 +217,5 @@ __marimo__/
 !/01_DocumentParse/data/raw/NIPS-2017-attention-is-all-you-need-Paper.pdf
 
 **/.DS_Store
+
+**/*.db
