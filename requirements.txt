@@ -4,7 +4,7 @@ spacy
 sentence-transformers
 pandas
 jieba
-pymilvus[milvus-lite]
+'pymilvus[milvus-lite]'
 openai
 requests
 tqdm
