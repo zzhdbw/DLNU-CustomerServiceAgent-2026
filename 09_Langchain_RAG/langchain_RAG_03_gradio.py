@@ -13,7 +13,7 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 
 # ── 配置 ──────────────────────────────────────────────────────────────
-DB_PATH = "09_Langchain_RAG/db_files/phone_qa.db"
+DB_PATH = "db_files/phone_qa.db"
 COLLECTION_NAME = "phone_qa_collection"
 TOP_K = 10
 
@@ -52,10 +52,12 @@ def search_milvus(question: str) -> list[dict]:
 
     results = []
     for hit in search_res[0]:
-        results.append({
-            "text": hit["entity"]["text"],
-            "distance": round(hit["distance"], 4),
-        })
+        results.append(
+            {
+                "text": hit["entity"]["text"],
+                "distance": round(hit["distance"], 4),
+            }
+        )
     return results
 
 
@@ -76,10 +78,12 @@ def build_context(results: list[dict]) -> str:
 
 
 # 构建 LangChain LLM 链路（可复用，支持流式）
-prompt = ChatPromptTemplate.from_messages([
-    ("system", SYSTEM_PROMPT),
-    ("human", USER_PROMPT),
-])
+prompt = ChatPromptTemplate.from_messages(
+    [
+        ("system", SYSTEM_PROMPT),
+        ("human", USER_PROMPT),
+    ]
+)
 
 llm = ChatOpenAI(
     model="deepseek-chat",
