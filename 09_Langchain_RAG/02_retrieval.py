@@ -1,10 +1,11 @@
-from langchain_milvus import Milvus
+import os
+
 from langchain_community.embeddings import JinaEmbeddings
-from langchain_openai import ChatOpenAI
+from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnablePassthrough
-from langchain_core.output_parsers import StrOutputParser
-import os
+from langchain_milvus import Milvus
+from langchain_openai import ChatOpenAI
 
 DB_PATH = "db_files/phone_qa.db"
 COLLECTION_NAME = "phone_qa_collection"

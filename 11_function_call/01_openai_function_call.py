@@ -1,6 +1,7 @@
-from openai import OpenAI
-from pprint import pprint
 import os
+from pprint import pprint
+
+from openai import OpenAI
 
 client = OpenAI(
     api_key=os.getenv("DEEPSEEK_API_KEY", "你的DeepSeek API Key"),
@@ -9,9 +10,7 @@ client = OpenAI(
 
 
 def send_messages(messages):
-    response = client.chat.completions.create(
-        model="deepseek-v4-flash", messages=messages, tools=tools
-    )
+    response = client.chat.completions.create(model="deepseek-v4-flash", messages=messages, tools=tools)
     return response.choices[0].message
 
 

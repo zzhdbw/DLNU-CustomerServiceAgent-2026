@@ -11,18 +11,17 @@
   python 02_agentic_rag_gradio.py
 """
 
-import gradio as gr
+import os
 from datetime import datetime
 
-from langchain_milvus import Milvus
-from langchain_community.embeddings import JinaEmbeddings
-from langchain_openai import ChatOpenAI
-from langchain_core.tools import tool
-from langchain_core.messages import HumanMessage, AIMessage
+import gradio as gr
 from langchain.agents import create_agent
-
+from langchain_community.embeddings import JinaEmbeddings
+from langchain_core.messages import AIMessage, HumanMessage
+from langchain_core.tools import tool
+from langchain_milvus import Milvus
+from langchain_openai import ChatOpenAI
 from tianqi import get_weather as _get_weather
-import os
 
 # ======================== 配置 ========================
 DB_PATH = "db_files/phone_qa.db"
@@ -123,9 +122,7 @@ def chat(question: str, history: list[dict]):
                 for tc in chunk.tool_call_chunks:
                     name = tc.get("name") or ""
                     if name:
-                        steps.append(
-                            f'<details><summary>🔧 调用工具: <code>{name}()</code></summary></details>'
-                        )
+                        steps.append(f"<details><summary>🔧 调用工具: <code>{name}()</code></summary></details>")
                         yield "\n\n".join(steps)
 
             # 最终回答逐 token 输出
@@ -139,9 +136,7 @@ def chat(question: str, history: list[dict]):
             content = str(chunk.content)
             if len(content) > 300:
                 content = content[:300] + "..."
-            steps.append(
-                f'<details><summary>📎 工具返回</summary>\n\n```\n{content}\n```\n\n</details>'
-            )
+            steps.append(f"<details><summary>📎 工具返回</summary>\n\n```\n{content}\n```\n\n</details>")
             yield "\n\n".join(steps)
 
 

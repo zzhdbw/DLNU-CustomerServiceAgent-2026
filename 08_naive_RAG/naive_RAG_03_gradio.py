@@ -1,8 +1,9 @@
+import os
+
 import gradio as gr
+from naive_RAG_01_make_embedding import emb_text
 from openai import OpenAI
 from pymilvus import MilvusClient
-from naive_RAG_01_make_embedding import emb_text
-import os
 
 # ── 配置 ──────────────────────────────────────────────────────────────
 DB_PATH = "./db_files/milvus_demo.db"
@@ -61,9 +62,7 @@ def build_context_display(results: list) -> str:
     """构建可折叠的检索结果展示 HTML"""
     lines = ["<details><summary>📄 检索结果（点击展开）</summary>\n\n"]
     for i, r in enumerate(results, 1):
-        snippet = r["text"][:200].replace("\n", " ") + (
-            "..." if len(r["text"]) > 200 else ""
-        )
+        snippet = r["text"][:200].replace("\n", " ") + ("..." if len(r["text"]) > 200 else "")
         lines.append(f"**#{i}** (相似度: {r['distance']})\n\n> {snippet}\n\n")
     lines.append("</details>")
     return "".join(lines)

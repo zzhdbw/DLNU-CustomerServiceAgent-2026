@@ -1,7 +1,7 @@
 # https://spacy.io/
 import os
-import spacy
 
+import spacy
 
 DATA_PATH = os.path.join(os.path.dirname(__file__), "data", "atten_is_all_you_need.md")
 CHUNK_SIZE = 512
@@ -12,9 +12,7 @@ def read_file(file_path):
         return f.read()
 
 
-def split_text_by_semantic(
-    text: str, chunk_size: int = 500, chunk_overlap: int = 20
-) -> list[str]:
+def split_text_by_semantic(text: str, chunk_size: int = 500, chunk_overlap: int = 20) -> list[str]:
     """核心分割逻辑"""
     doc = nlp(text)
     sentences = [sent.text for sent in doc.sents]

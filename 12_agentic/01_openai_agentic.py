@@ -1,7 +1,8 @@
 import json
+import os
 from datetime import datetime
+
 from openai import OpenAI
-from pprint import pprint
 
 client = OpenAI(
     api_key=os.getenv("DEEPSEEK_API_KEY", "你的DeepSeek API Key"),
@@ -12,8 +13,8 @@ client = OpenAI(
 # ============================================================
 # 真正执行的函数
 # ============================================================
+
 from tianqi import get_weather
-import os
 
 
 def get_current_time() -> str:
@@ -94,9 +95,7 @@ tools = [
 def agent_loop(messages: list) -> str:
     """循环直到模型生成最终文本回复（不再调用工具）"""
     while True:
-        response = client.chat.completions.create(
-            model="deepseek-v4-flash", messages=messages, tools=tools
-        )
+        response = client.chat.completions.create(model="deepseek-v4-flash", messages=messages, tools=tools)
         message = response.choices[0].message
 
         if message.tool_calls:

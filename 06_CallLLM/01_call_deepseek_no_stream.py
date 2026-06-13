@@ -1,5 +1,6 @@
-from openai import OpenAI
 import os
+
+from openai import OpenAI
 
 client = OpenAI(
     api_key=os.getenv("DEEPSEEK_API_KEY", "你的DeepSeek API Key"),  # 替换为你的DeepSeek API Key

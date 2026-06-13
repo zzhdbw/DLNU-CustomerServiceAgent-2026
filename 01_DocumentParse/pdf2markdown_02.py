@@ -1,12 +1,11 @@
 # https://mineru.net/
 
 import os
+import shutil
+import zipfile
+
 import requests
 from dotenv import load_dotenv
-import requests
-import zipfile
-import os
-import shutil
 
 load_dotenv()
 token = os.environ["API_TOKEN"]

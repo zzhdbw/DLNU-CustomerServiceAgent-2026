@@ -1,9 +1,10 @@
+import os
+from pprint import pprint
+
 from langchain_community.document_loaders import DirectoryLoader, TextLoader
 from langchain_community.embeddings import JinaEmbeddings
-from langchain_text_splitters import MarkdownHeaderTextSplitter
 from langchain_milvus import Milvus
-from pprint import pprint
-import os
+from langchain_text_splitters import MarkdownHeaderTextSplitter
 
 DATA_DIR = "./data/phone_docs/zh/"
 DB_PATH = "db_files/phone_qa.db"
@@ -30,9 +31,7 @@ for doc in raw_docs:
         chunk.metadata["H1"] = chunk.metadata.get("H1", "")
         chunk.metadata["H2"] = chunk.metadata.get("H2", "")
         chunk.metadata["H3"] = chunk.metadata.get("H3", "")
-        header_info = f"{chunk.metadata['H1']}\n{chunk.metadata['H2']}\n{chunk.metadata['H3']}\n".lstrip(
-            "\n"
-        )
+        header_info = f"{chunk.metadata['H1']}\n{chunk.metadata['H2']}\n{chunk.metadata['H3']}\n".lstrip("\n")
         chunk.page_content = header_info + chunk.page_content
         chunk.metadata["source"] = doc.metadata.get("source", "")
         result_chunks.append(chunk)

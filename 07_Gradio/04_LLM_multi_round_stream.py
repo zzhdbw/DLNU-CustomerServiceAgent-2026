@@ -1,4 +1,5 @@
 import os
+
 import gradio as gr
 from openai import OpenAI
 
@@ -57,14 +58,13 @@ def chat_with_llm(message: str, history: list):
 demo = gr.ChatInterface(
     fn=chat_with_llm,
     title="🤖 大模型多轮对话",
-    description=f"deepseek-chat",
+    description="deepseek-chat",
     examples=["介绍一下你自己", "用 Python 写一个快速排序", "今天天气怎么样？"],
     cache_examples=False,  # 对话示例不缓存，确保每次都是实时调用
 )
 
 # ==================== 启动服务 ====================
 if __name__ == "__main__":
-
     demo.launch(
         server_name="0.0.0.0",  # 允许局域网访问
         server_port=7860,

@@ -1,9 +1,10 @@
 import os
 import re
-from tqdm import tqdm
-from pymilvus import MilvusClient
 from glob import glob
+
 import requests
+from pymilvus import MilvusClient
+from tqdm import tqdm
 
 DATA_DIR = "data/phone_docs/zh"
 
@@ -18,7 +19,7 @@ def read_md() -> list[str]:
         with open(file_path, "r") as file:
             content = file.read()
 
-        raw_chunks = re.split(r'\n(?=##?\s)', f'\n{content}')
+        raw_chunks = re.split(r"\n(?=##?\s)", f"\n{content}")
         parent_title = ""
         for chunk in raw_chunks:
             chunk = chunk.strip()
@@ -39,7 +40,6 @@ def read_md() -> list[str]:
 
 
 def emb_text(text: str) -> list[float]:
-
     url = "https://api.jina.ai/v1/embeddings"
     headers = {
         "Content-Type": "application/json",
@@ -56,12 +56,10 @@ def emb_text(text: str) -> list[float]:
 
     response = requests.post(url, headers=headers, json=data)
 
-    return response.json()["data"][0]['embedding']
+    return response.json()["data"][0]["embedding"]
 
 
-def create_db(
-    db_path: str, collection_name: str, dimension: int = 1024
-) -> MilvusClient:
+def create_db(db_path: str, collection_name: str, dimension: int = 1024) -> MilvusClient:
     milvus_client = MilvusClient(uri=db_path)
 
     if milvus_client.has_collection(collection_name):
@@ -94,9 +92,7 @@ if __name__ == "__main__":
     # 读取数据
     text_lines = read_md()
     # 创建数据库
-    milvus_client = create_db(
-        db_path="./db_files/milvus_demo.db", collection_name=collection_name
-    )
+    milvus_client = create_db(db_path="./db_files/milvus_demo.db", collection_name=collection_name)
     # 创建嵌入向量
     data = create_emb(text_lines)
     # 插入数据库

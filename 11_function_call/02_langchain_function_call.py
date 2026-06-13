@@ -1,9 +1,9 @@
-from langchain_openai import ChatOpenAI
+import os
+from pprint import pprint
+
 from langchain_core.messages import HumanMessage, ToolMessage
 from langchain_core.tools import tool
-from pprint import pprint
-import os
-
+from langchain_openai import ChatOpenAI
 
 # 用 langchain-openai 对接 DeepSeek
 llm = ChatOpenAI(

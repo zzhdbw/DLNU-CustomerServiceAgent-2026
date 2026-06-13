@@ -1,8 +1,8 @@
-from pymilvus import MilvusClient
 import random
 from pprint import pprint
-import numpy as np
 
+import numpy as np
+from pymilvus import MilvusClient
 
 # 01 创建/连接向量数据库
 client = MilvusClient("db_files/milvus_demo.db")
@@ -24,10 +24,7 @@ history_docs = [
 ]
 # Use fake representation with random vectors (64 dimension).
 vectors = np.array([np.random.uniform(-1, 1, 64) for _ in history_docs])
-data = [
-    {"id": i, "vector": vectors[i], "text": history_docs[i], "subject": "history"}
-    for i in range(len(vectors))
-]
+data = [{"id": i, "vector": vectors[i], "text": history_docs[i], "subject": "history"} for i in range(len(vectors))]
 
 pprint(data)
 

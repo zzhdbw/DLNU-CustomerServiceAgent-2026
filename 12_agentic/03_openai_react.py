@@ -1,6 +1,8 @@
-from datetime import datetime
-from openai import OpenAI
 import json
+import os
+from datetime import datetime
+
+from openai import OpenAI
 
 client = OpenAI(
     api_key=os.getenv("DEEPSEEK_API_KEY", "你的DeepSeek API Key"),
@@ -11,7 +13,6 @@ MODEL = "deepseek-v4-flash"
 
 
 from tianqi import get_weather
-import os
 
 
 def get_current_time() -> str:

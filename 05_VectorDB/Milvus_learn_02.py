@@ -1,13 +1,12 @@
 from pymilvus import (
-    MilvusClient,
+    AnnSearchRequest,
     DataType,
     Function,
     FunctionType,
-    AnnSearchRequest,
+    MilvusClient,
     RRFRanker,
 )
 from pymilvus.model.dense import SentenceTransformerEmbeddingFunction
-
 
 # 1. 连接 Milvus Lite
 client = MilvusClient(uri="./milvus_hybrid_demo.db")
@@ -20,9 +19,7 @@ if client.has_collection(collection_name):
 
 # 2. 准备 dense embedding 模型
 # 你也可以换成 BGE、OpenAI embedding 等
-dense_ef = SentenceTransformerEmbeddingFunction(
-    model_name="../03_DenseRetrieval/models/BAAI/bge-m3", device="cpu"
-)
+dense_ef = SentenceTransformerEmbeddingFunction(model_name="../03_DenseRetrieval/models/BAAI/bge-m3", device="cpu")
 
 dense_dim = dense_ef.dim
 
@@ -41,9 +38,7 @@ schema.add_field(
 )
 
 # dense 向量字段
-schema.add_field(
-    field_name="dense_vector", datatype=DataType.FLOAT_VECTOR, dim=dense_dim
-)
+schema.add_field(field_name="dense_vector", datatype=DataType.FLOAT_VECTOR, dim=dense_dim)
 
 # sparse 向量字段：BM25 Function 的输出字段
 schema.add_field(field_name="sparse_vector", datatype=DataType.SPARSE_FLOAT_VECTOR)
@@ -66,20 +61,14 @@ schema.add_function(bm25_function)
 index_params = client.prepare_index_params()
 
 # dense 索引
-index_params.add_index(
-    field_name="dense_vector", index_type="AUTOINDEX", metric_type="COSINE"
-)
+index_params.add_index(field_name="dense_vector", index_type="AUTOINDEX", metric_type="COSINE")
 
 # sparse BM25 索引
-index_params.add_index(
-    field_name="sparse_vector", index_type="SPARSE_INVERTED_INDEX", metric_type="BM25"
-)
+index_params.add_index(field_name="sparse_vector", index_type="SPARSE_INVERTED_INDEX", metric_type="BM25")
 
 
 # 6. 创建 collection
-client.create_collection(
-    collection_name=collection_name, schema=schema, index_params=index_params
-)
+client.create_collection(collection_name=collection_name, schema=schema, index_params=index_params)
 
 
 # 7. 插入数据

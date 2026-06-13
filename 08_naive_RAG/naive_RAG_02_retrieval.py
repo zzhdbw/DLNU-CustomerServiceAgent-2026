@@ -1,8 +1,9 @@
-from pymilvus import MilvusClient
-from naive_RAG_01_make_embedding import emb_text
-from pprint import pprint
-from openai import OpenAI
 import os
+from pprint import pprint
+
+from naive_RAG_01_make_embedding import emb_text
+from openai import OpenAI
+from pymilvus import MilvusClient
 
 SYSTEM_PROMPT = """
     你是一个手机产品智能客服助手，请根据提供的上下文片段回答用户关于手机的问题。
@@ -30,9 +31,7 @@ if __name__ == "__main__":
     # 搜索与问题最相似的向量
     search_res = milvus_client.search(
         collection_name=collection_name,
-        data=[
-            emb_text(question)
-        ],  # Use the `emb_text` function to convert the question to an embedding vector
+        data=[emb_text(question)],  # Use the `emb_text` function to convert the question to an embedding vector
         limit=3,  # Return top 3 results
         search_params={"metric_type": "IP", "params": {}},  # Inner product distance
         output_fields=["text"],  # Return the text field
@@ -40,12 +39,8 @@ if __name__ == "__main__":
     pprint(search_res)
 
     # 组装Prompt
-    retrieved_lines_with_distances = [
-        (res["entity"]["text"], res["distance"]) for res in search_res[0]
-    ]
-    context = "\n".join(
-        [line_with_distance[0] for line_with_distance in retrieved_lines_with_distances]
-    )
+    retrieved_lines_with_distances = [(res["entity"]["text"], res["distance"]) for res in search_res[0]]
+    context = "\n".join([line_with_distance[0] for line_with_distance in retrieved_lines_with_distances])
 
     # Call DeepSeek API
     client = OpenAI(

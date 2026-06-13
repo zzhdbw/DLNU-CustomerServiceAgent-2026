@@ -1,13 +1,13 @@
-from langchain_milvus import Milvus
-from langchain_community.embeddings import JinaEmbeddings
-from langchain_openai import ChatOpenAI
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain_core.runnables import RunnablePassthrough
-from langchain_core.output_parsers import StrOutputParser
-from langchain_core.messages import HumanMessage, AIMessage
-from operator import itemgetter
-import gradio as gr
 import os
+from operator import itemgetter
+
+import gradio as gr
+from langchain_community.embeddings import JinaEmbeddings
+from langchain_core.messages import AIMessage, HumanMessage
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain_milvus import Milvus
+from langchain_openai import ChatOpenAI
 
 DB_PATH = "db_files/phone_qa.db"
 COLLECTION_NAME = "phone_qa_collection"
@@ -109,10 +109,10 @@ def chat(question, history, use_rag, top_k):
         retrieval_info = "\n\n<details><summary>📎 召回的文档片段</summary>\n\n"
         for r in results:
             source = r["source"].replace("data/phone_docs/zh/", "").replace(".md", "")
-            similarity = round(
-                1 - r["score"], 4
-            )  # r["score"]是两个向量的距离，相似度是1-距离
-            retrieval_info += f"**来源:** {source} &nbsp;|&nbsp; **相似度:** `{similarity}`\n\n> {r['text'][:200]}...\n\n---\n\n"
+            similarity = round(1 - r["score"], 4)  # r["score"]是两个向量的距离，相似度是1-距离
+            retrieval_info += (
+                f"**来源:** {source} &nbsp;|&nbsp; **相似度:** `{similarity}`\n\n> {r['text'][:200]}...\n\n---\n\n"
+            )
         retrieval_info += "</details>"
     else:
         context = "没有相关资料"
@@ -120,9 +120,7 @@ def chat(question, history, use_rag, top_k):
 
     # 流式输出回答
     answer = ""
-    for chunk in chain.stream(
-        {"context": context, "question": question, "history": history_messages}
-    ):
+    for chunk in chain.stream({"context": context, "question": question, "history": history_messages}):
         answer += chunk
         yield answer
 

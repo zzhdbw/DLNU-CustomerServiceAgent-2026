@@ -1,10 +1,10 @@
+import os
+from pprint import pprint
+
 from langchain_community.document_loaders import DirectoryLoader, TextLoader
 from langchain_community.embeddings import JinaEmbeddings
-from langchain_text_splitters import MarkdownHeaderTextSplitter
 from langchain_milvus import Milvus
-from pprint import pprint
-import os
-
+from langchain_text_splitters import MarkdownHeaderTextSplitter
 
 DATA_DIR = "data/phone_docs/zh/"
 DB_PATH = "db_files/phone_qa.db"

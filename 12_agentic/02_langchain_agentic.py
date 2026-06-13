@@ -1,7 +1,9 @@
+import os
 from datetime import datetime
-from langchain_openai import ChatOpenAI
+
 from langchain_core.messages import HumanMessage, ToolMessage
 from langchain_core.tools import tool
+from langchain_openai import ChatOpenAI
 
 llm = ChatOpenAI(
     api_key=os.getenv("DEEPSEEK_API_KEY", "你的DeepSeek API Key"),
@@ -13,8 +15,8 @@ llm = ChatOpenAI(
 # ============================================================
 # 真正执行的函数（用 @tool 装饰器定义）
 # ============================================================
+
 from tianqi import get_weather as _get_weather
-import os
 
 
 @tool
@@ -71,9 +73,7 @@ def agent_loop(messages: list) -> str:
                 tool_result = tool_obj.invoke(tool_args)
 
                 print(f"   返回结果: {tool_result}")
-                messages.append(
-                    ToolMessage(content=tool_result, tool_call_id=tool_call["id"])
-                )
+                messages.append(ToolMessage(content=tool_result, tool_call_id=tool_call["id"]))
         else:
             return result.content
 

@@ -10,9 +10,7 @@ def tf(word: str, count: Counter) -> float:
 
 def idf(word: str, count_list: list[Counter]) -> float:
     """计算逆文档频率（Inverse Document Frequency）：衡量该词在整个语料库中的普遍程度"""
-    n_contain = sum(
-        [1 for count in count_list if word in count]
-    )  # 该词出现在几个文档中
+    n_contain = sum([1 for count in count_list if word in count])  # 该词出现在几个文档中
     return math.log(len(count_list) / (1 + n_contain))  # 加1是为了避免除零错误
 
 
@@ -23,12 +21,12 @@ def tf_idf(word: str, count: Counter, count_list: list[Counter]) -> float:
 
 if __name__ == "__main__":
     corpus = [
-        'this is the first document',
-        'this is the second second document',
-        'and the third one',
+        "this is the first document",
+        "this is the second second document",
+        "and the third one",
     ]
     # 分词
-    words_list = [doc.split(' ') for doc in corpus]
+    words_list = [doc.split(" ") for doc in corpus]
     pprint(words_list)
 
     # 统计每个文档中每个词的出现次数

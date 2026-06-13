@@ -26,11 +26,11 @@ def bm25(
 
 if __name__ == "__main__":
     corpus = [
-        'this is the first document',
-        'this is the second second document',
-        'and the third one',
+        "this is the first document",
+        "this is the second second document",
+        "and the third one",
     ]
-    words_list = [doc.split(' ') for doc in corpus]
+    words_list = [doc.split(" ") for doc in corpus]
     pprint(words_list)
 
     count_list = [Counter(words_list[i]) for i in range(len(words_list))]

@@ -1,22 +1,17 @@
-import getpass
 import os
-from langchain_core.vectorstores import InMemoryVectorStore
-from langchain_openai import OpenAIEmbeddings
-from langchain_community.embeddings import JinaEmbeddings
-from langchain_community.document_loaders import WebBaseLoader
-from langchain.tools import tool
-from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langgraph.graph import MessagesState
-from langchain.chat_models import init_chat_model
-from pydantic import BaseModel, Field
 from typing import Literal
-from langgraph.graph import StateGraph, START, END
-from langgraph.prebuilt import ToolNode, tools_condition
 
-from langchain_core.messages import convert_to_messages
-
+from langchain.chat_models import init_chat_model
 from langchain.messages import HumanMessage
-
+from langchain.tools import tool
+from langchain_community.document_loaders import WebBaseLoader
+from langchain_community.embeddings import JinaEmbeddings
+from langchain_core.messages import convert_to_messages
+from langchain_core.vectorstores import InMemoryVectorStore
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langgraph.graph import END, START, MessagesState, StateGraph
+from langgraph.prebuilt import ToolNode, tools_condition
+from pydantic import BaseModel, Field
 
 urls = [
     "https://lilianweng.github.io/posts/2024-11-28-reward-hacking/",
@@ -31,9 +26,7 @@ print("=" * 50)
 
 docs_list = [item for sublist in docs for item in sublist]
 
-text_splitter = RecursiveCharacterTextSplitter.from_tiktoken_encoder(
-    chunk_size=100, chunk_overlap=50
-)
+text_splitter = RecursiveCharacterTextSplitter.from_tiktoken_encoder(chunk_size=100, chunk_overlap=50)
 doc_splits = text_splitter.split_documents(docs_list)
 print("=" * 50)
 print(doc_splits[0].page_content.strip())
@@ -102,9 +95,7 @@ GRADE_PROMPT = (
 class GradeDocuments(BaseModel):
     """Grade documents using a binary score for relevance check."""
 
-    binary_score: str = Field(
-        description="Relevance score: 'yes' if relevant, or 'no' if not relevant"
-    )
+    binary_score: str = Field(description="Relevance score: 'yes' if relevant, or 'no' if not relevant")
 
 
 grader_model = init_chat_model("deepseek-chat", temperature=0)
@@ -118,9 +109,7 @@ def grade_documents(
     context = state["messages"][-1].content
 
     prompt = GRADE_PROMPT.format(question=question, context=context)
-    response = grader_model.with_structured_output(GradeDocuments).invoke(
-        [{"role": "user", "content": prompt}]
-    )
+    response = grader_model.with_structured_output(GradeDocuments).invoke([{"role": "user", "content": prompt}])
     score = response.binary_score
 
     if score == "yes":

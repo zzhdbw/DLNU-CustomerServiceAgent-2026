@@ -1,5 +1,5 @@
-from sentence_transformers import SentenceTransformer
 import numpy as np
+from sentence_transformers import SentenceTransformer
 
 model = SentenceTransformer("./models/BAAI/bge-m3")
 
@@ -27,7 +27,7 @@ vec_queen = embeddings[word_to_idx["皇后"]]
 result_vec = vec_king - vec_man + vec_woman
 
 print("\n【向量计算】国王 - 男人 + 女人")
-print(f"  结果向量与各词的相似度：")
+print("  结果向量与各词的相似度：")
 
 similarities = []
 for word in words:

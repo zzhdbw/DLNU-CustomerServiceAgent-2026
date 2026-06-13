@@ -1,7 +1,9 @@
+import os
 from datetime import datetime
-from langchain_openai import ChatOpenAI
-from langchain_core.tools import tool
+
 from langchain.agents import create_agent
+from langchain_core.tools import tool
+from langchain_openai import ChatOpenAI
 
 llm = ChatOpenAI(
     api_key=os.getenv("DEEPSEEK_API_KEY", "你的DeepSeek API Key"),
@@ -13,8 +15,8 @@ llm = ChatOpenAI(
 # ============================================================
 # 真正执行的函数（与 01 相同，使用真实天气 API）
 # ============================================================
+
 from tianqi import get_weather as _get_weather
-import os
 
 
 @tool
