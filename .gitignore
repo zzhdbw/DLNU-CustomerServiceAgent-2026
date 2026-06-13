@@ -225,7 +225,7 @@ __marimo__/
 .codegraph/
 
 #  Presentation files
-*.pptx
+
 
 #  Data files
 *.xlsx
