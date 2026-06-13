@@ -2,6 +2,7 @@ import gradio as gr
 from openai import OpenAI
 from pymilvus import MilvusClient
 from naive_RAG_01_make_embedding import emb_text
+import os
 
 # ── 配置 ──────────────────────────────────────────────────────────────
 DB_PATH = "./db_files/milvus_demo.db"
@@ -9,7 +10,7 @@ COLLECTION_NAME = "my_rag_collection"
 TOP_K = 3
 
 SYSTEM_PROMPT = """
-    你是一个智能客服助手，请根据提供的上下文片段回答问题。
+    你是一个手机产品智能客服助手，请根据提供的上下文片段回答用户关于手机的问题。
     """
 
 USER_PROMPT = """
@@ -87,18 +88,20 @@ def respond(message: str, history: list):
     full_response = context_display + "\n\n"
     yield full_response
 
-    # ── 3. 流式调用 LLM ──────────────────────────────────────────────
+    # ── 3. 多轮对话：拼接历史消息 + 当前 RAG 增强问题 ────────────────
     client = OpenAI(
-        api_key="*",
+        api_key=os.getenv("DEEPSEEK_API_KEY", "你的DeepSeek API Key"),
         base_url="https://api.deepseek.com",
     )
 
+    messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+    for h in history:
+        messages.append({"role": h["role"], "content": h["content"]})
+    messages.append({"role": "user", "content": USER_PROMPT.format(context, message)})
+
     response = client.chat.completions.create(
         model="deepseek-chat",
-        messages=[
-            {"role": "system", "content": SYSTEM_PROMPT},
-            {"role": "user", "content": USER_PROMPT.format(context, message)},
-        ],
+        messages=messages,
         stream=True,
     )
 
@@ -112,10 +115,10 @@ def build_demo():
     with gr.Blocks(title="Naive RAG 对话", theme=gr.themes.Soft()) as demo:
         gr.Markdown(
             """
-            # 📚 Naive RAG 问答系统
+            📱 手机产品智能客服 — Naive RAG 问答系统
 
             基于 **Milvus**（向量检索）+ **Jina Embedding** + **DeepSeek Chat** 的简易 RAG 系统。
-            输入问题后自动检索知识库，流式生成回答。
+            涵盖小米、华为多款机型的规格参数、售前咨询、售后服务等问题。
             """
         )
 
@@ -125,7 +128,7 @@ def build_demo():
             title="",
             description="",
             textbox=gr.Textbox(
-                placeholder="输入问题，例如：How is data stored in milvus?",
+                placeholder="输入问题，例如：小米14的屏幕参数是什么？",
                 container=False,
                 scale=7,
             ),

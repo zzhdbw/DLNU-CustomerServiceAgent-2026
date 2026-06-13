@@ -43,7 +43,7 @@ print("=" * 50)
 vectorstore = InMemoryVectorStore.from_documents(
     documents=doc_splits,
     embedding=JinaEmbeddings(
-        jina_api_key="jina_dfed9a88f2de4aee9c3b20e9ca69bc5f6rHHv1iWegzpYxPN6haaL49mch5l",
+        jina_api_key=os.getenv("JINA_API_KEY", "你的Jina API Key"),
         model_name="jina-embeddings-v2-base-en",
     ),
 )

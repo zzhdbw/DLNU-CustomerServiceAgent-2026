@@ -219,4 +219,15 @@ __marimo__/
 **/.DS_Store
 
 **/*.db
+**/db_files/
+
+#  CodeGraph auto-generated index
+.codegraph/
+
+#  Presentation files
+*.pptx
+
+#  Data files
+*.xlsx
+
 08_naive_RAG/data/*

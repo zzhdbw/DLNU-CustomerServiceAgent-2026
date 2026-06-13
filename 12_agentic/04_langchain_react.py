@@ -1,31 +1,26 @@
 from datetime import datetime
 from langchain_openai import ChatOpenAI
 from langchain_core.tools import tool
-from langgraph.prebuilt import create_react_agent
+from langchain.agents import create_agent
 
 llm = ChatOpenAI(
-    api_key="sk-c576413004a44dfeb327d8431b612bcb",
+    api_key=os.getenv("DEEPSEEK_API_KEY", "你的DeepSeek API Key"),
     base_url="https://api.deepseek.com",
     model="deepseek-v4-flash",
 )
 
 
 # ============================================================
-# 真正执行的函数（与 02 完全一样）
+# 真正执行的函数（与 01 相同，使用真实天气 API）
 # ============================================================
+from tianqi import get_weather as _get_weather
+import os
+
+
 @tool
-def get_weather(location: str) -> str:
-    """获取指定城市的天气信息，用户需要提供城市名称的拼音，如 hangzhou"""
-    weather_db = {
-        "hangzhou": "28摄氏度，多云，东南风3级",
-        "beijing": "32摄氏度，晴，北风2级",
-        "shanghai": "27摄氏度，小雨，东风4级",
-        "shenzhen": "30摄氏度，雷阵雨，南风3级",
-        "guangzhou": "31摄氏度，阴，微风",
-    }
-    return weather_db.get(
-        location.lower(), f"暂无「{location}」的天气数据，请确认城市名称是否正确"
-    )
+def get_weather(city_name: str) -> str:
+    """获取指定城市的天气信息，用户需要提供城市名称, 如大连或大连市"""
+    return _get_weather(city_name)
 
 
 @tool
@@ -54,7 +49,7 @@ tools = [get_weather, get_current_time, search_faq]
 # ============================================================
 # 一行创建 ReAct Agent，LangGraph 自动处理 Think → Act → Observe 循环
 # ============================================================
-agent = create_react_agent(model=llm, tools=tools)
+agent = create_agent(model=llm, tools=tools)
 
 
 if __name__ == "__main__":

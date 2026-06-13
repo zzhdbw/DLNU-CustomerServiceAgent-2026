@@ -1,7 +1,8 @@
 from openai import OpenAI
+import os
 
 client = OpenAI(
-    api_key="sk-23f015edb9a94a7f83f3c1a85753e976",  # 替换为你的DeepSeek API Key
+    api_key=os.getenv("DEEPSEEK_API_KEY", "你的DeepSeek API Key"),  # 替换为你的DeepSeek API Key
     base_url="https://api.deepseek.com",  # DeepSeek API端点
 )
 

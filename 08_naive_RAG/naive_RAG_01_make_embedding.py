@@ -1,26 +1,40 @@
 import os
+import re
 from tqdm import tqdm
 from pymilvus import MilvusClient
 from glob import glob
-import json
 import requests
 
-# 先获取数据
-# wget https://github.com/milvus-io/milvus-docs/releases/download/v2.4.6-preview/milvus_docs_2.4.x_en.zip
-# unzip -q milvus_docs_2.4.x_en.zip -d milvus_docs
+DATA_DIR = "data/phone_docs/zh"
 
 
 def read_md() -> list[str]:
     """
-    读取所有Markdown文件，返回一个包含所有文本的列表。
+    读取所有手机相关 Markdown 文件，按 H1/H2 切分，子节自动带上父标题上下文。
     """
     text_lines = []
 
-    for file_path in glob("milvus_docs/en/faq/*.md", recursive=True):
+    for file_path in glob(f"{DATA_DIR}/**/*.md", recursive=True):
         with open(file_path, "r") as file:
-            file_text = file.read()
+            content = file.read()
 
-        text_lines += file_text.split("# ")
+        raw_chunks = re.split(r'\n(?=##?\s)', f'\n{content}')
+        parent_title = ""
+        for chunk in raw_chunks:
+            chunk = chunk.strip()
+            if not chunk:
+                continue
+            title = chunk.split("\n")[0].strip()
+
+            if title.startswith("# ") or title.startswith("#\u3000"):
+                parent_title = title
+                body = "\n".join(chunk.split("\n")[1:]).strip()
+                if body:
+                    text_lines.append(chunk)
+            else:
+                enriched = f"{parent_title}\n\n{chunk}"
+                text_lines.append(enriched)
+
     return text_lines
 
 
@@ -29,7 +43,7 @@ def emb_text(text: str) -> list[float]:
     url = "https://api.jina.ai/v1/embeddings"
     headers = {
         "Content-Type": "application/json",
-        "Authorization": "Bearer jina_dfed9a88f2de4aee9c3b20e9ca69bc5f6rHHv1iWegzpYxPN6haaL49mch5l",
+        "Authorization": f"Bearer {os.getenv('JINA_API_KEY', '你的Jina API Key')}",
     }
     data = {
         "model": "jina-embeddings-v5-text-small",

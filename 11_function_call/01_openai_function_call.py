@@ -1,8 +1,9 @@
 from openai import OpenAI
 from pprint import pprint
+import os
 
 client = OpenAI(
-    api_key="sk-c576413004a44dfeb327d8431b612bcb",
+    api_key=os.getenv("DEEPSEEK_API_KEY", "你的DeepSeek API Key"),
     base_url="https://api.deepseek.com",
 )
 

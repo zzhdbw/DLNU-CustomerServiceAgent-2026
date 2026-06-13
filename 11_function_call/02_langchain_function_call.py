@@ -2,11 +2,12 @@ from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage, ToolMessage
 from langchain_core.tools import tool
 from pprint import pprint
+import os
 
 
 # 用 langchain-openai 对接 DeepSeek
 llm = ChatOpenAI(
-    api_key="sk-c576413004a44dfeb327d8431b612bcb",
+    api_key=os.getenv("DEEPSEEK_API_KEY", "你的DeepSeek API Key"),
     base_url="https://api.deepseek.com",
     model="deepseek-v4-flash",
 )

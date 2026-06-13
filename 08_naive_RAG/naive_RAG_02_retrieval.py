@@ -2,12 +2,13 @@ from pymilvus import MilvusClient
 from naive_RAG_01_make_embedding import emb_text
 from pprint import pprint
 from openai import OpenAI
+import os
 
 SYSTEM_PROMPT = """
-    Human: You are an AI assistant. You are able to find answers to the questions from the contextual passage snippets provided.
+    你是一个手机产品智能客服助手，请根据提供的上下文片段回答用户关于手机的问题。
     """
 USER_PROMPT = """
-Use the following pieces of information enclosed in <context> tags to provide an answer to the question enclosed in <question> tags.
+请根据 <context> 标签中的资料回答 <question> 标签中的问题。
 <context>
 {}
 </context>
@@ -21,7 +22,7 @@ Use the following pieces of information enclosed in <context> tags to provide an
 if __name__ == "__main__":
     db_path = "./db_files/milvus_demo.db"
     collection_name = "my_rag_collection"
-    question = "How is data stored in milvus?"
+    question = "小米14的屏幕参数是什么？"
 
     # 创建向量数据库连接
     milvus_client = MilvusClient(uri=db_path)
@@ -48,7 +49,7 @@ if __name__ == "__main__":
 
     # Call DeepSeek API
     client = OpenAI(
-        api_key="sk-4e1697139c74434290d1348daa8013d6",
+        api_key=os.getenv("DEEPSEEK_API_KEY", "你的DeepSeek API Key"),
         base_url="https://api.deepseek.com",
     )
 
