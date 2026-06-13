@@ -16,7 +16,10 @@ llm = ChatOpenAI(
 # 真正执行的函数（用 @tool 装饰器定义）
 # ============================================================
 
+from dotenv import load_dotenv
 from tianqi import get_weather as _get_weather
+
+load_dotenv()
 
 
 @tool

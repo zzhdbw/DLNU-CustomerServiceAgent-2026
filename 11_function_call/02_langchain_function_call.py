@@ -1,9 +1,12 @@
 import os
 from pprint import pprint
 
+from dotenv import load_dotenv
 from langchain_core.messages import HumanMessage, ToolMessage
 from langchain_core.tools import tool
 from langchain_openai import ChatOpenAI
+
+load_dotenv()
 
 # 用 langchain-openai 对接 DeepSeek
 llm = ChatOpenAI(

@@ -16,7 +16,10 @@ llm = ChatOpenAI(
 # 真正执行的函数（与 01 相同，使用真实天气 API）
 # ============================================================
 
+from dotenv import load_dotenv
 from tianqi import get_weather as _get_weather
+
+load_dotenv()
 
 
 @tool

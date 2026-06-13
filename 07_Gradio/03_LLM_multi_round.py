@@ -1,7 +1,10 @@
 import os
 
 import gradio as gr
+from dotenv import load_dotenv
 from openai import OpenAI
+
+load_dotenv()
 
 SYSTEM_PROMPT = "你是一个有帮助的助手。"  # 可自定义系统提示词
 

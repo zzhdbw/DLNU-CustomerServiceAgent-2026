@@ -1,9 +1,12 @@
 import os
 
 import gradio as gr
+from dotenv import load_dotenv
 from naive_RAG_01_make_embedding import emb_text
 from openai import OpenAI
 from pymilvus import MilvusClient
+
+load_dotenv()
 
 # ── 配置 ──────────────────────────────────────────────────────────────
 DB_PATH = "./db_files/milvus_demo.db"

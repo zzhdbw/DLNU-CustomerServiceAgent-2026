@@ -1,9 +1,12 @@
 import os
 from pprint import pprint
 
+from dotenv import load_dotenv
 from naive_RAG_01_make_embedding import emb_text
 from openai import OpenAI
 from pymilvus import MilvusClient
+
+load_dotenv()
 
 SYSTEM_PROMPT = """
     你是一个手机产品智能客服助手，请根据提供的上下文片段回答用户关于手机的问题。

@@ -3,6 +3,10 @@ import os
 import urllib.parse
 import urllib.request
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 _KEY = os.getenv("AMAP_API_KEY", "你的高德地图 API Key")
 _URL = "https://restapi.amap.com/v3/weather/weatherInfo"
 

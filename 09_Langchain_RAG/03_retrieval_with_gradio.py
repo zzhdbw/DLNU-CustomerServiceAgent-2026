@@ -2,12 +2,15 @@ import os
 from operator import itemgetter
 
 import gradio as gr
+from dotenv import load_dotenv
 from langchain_community.embeddings import JinaEmbeddings
 from langchain_core.messages import AIMessage, HumanMessage
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_milvus import Milvus
 from langchain_openai import ChatOpenAI
+
+load_dotenv()
 
 DB_PATH = "db_files/phone_qa.db"
 COLLECTION_NAME = "phone_qa_collection"

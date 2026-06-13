@@ -1,6 +1,7 @@
 import os
 from typing import Literal
 
+from dotenv import load_dotenv
 from langchain.chat_models import init_chat_model
 from langchain.messages import HumanMessage
 from langchain.tools import tool
@@ -12,6 +13,8 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langgraph.graph import END, START, MessagesState, StateGraph
 from langgraph.prebuilt import ToolNode, tools_condition
 from pydantic import BaseModel, Field
+
+load_dotenv()
 
 urls = [
     "https://lilianweng.github.io/posts/2024-11-28-reward-hacking/",

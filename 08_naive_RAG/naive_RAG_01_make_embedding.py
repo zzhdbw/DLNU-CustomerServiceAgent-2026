@@ -3,8 +3,11 @@ import re
 from glob import glob
 
 import requests
+from dotenv import load_dotenv
 from pymilvus import MilvusClient
 from tqdm import tqdm
+
+load_dotenv()
 
 DATA_DIR = "data/phone_docs/zh"
 

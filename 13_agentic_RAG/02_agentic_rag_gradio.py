@@ -15,6 +15,7 @@ import os
 from datetime import datetime
 
 import gradio as gr
+from dotenv import load_dotenv
 from langchain.agents import create_agent
 from langchain_community.embeddings import JinaEmbeddings
 from langchain_core.messages import AIMessage, HumanMessage
@@ -22,6 +23,8 @@ from langchain_core.tools import tool
 from langchain_milvus import Milvus
 from langchain_openai import ChatOpenAI
 from tianqi import get_weather as _get_weather
+
+load_dotenv()
 
 # ======================== 配置 ========================
 DB_PATH = "db_files/phone_qa.db"

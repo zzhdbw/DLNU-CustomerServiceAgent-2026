@@ -12,7 +12,10 @@ client = OpenAI(
 MODEL = "deepseek-v4-flash"
 
 
+from dotenv import load_dotenv
 from tianqi import get_weather
+
+load_dotenv()
 
 
 def get_current_time() -> str:
